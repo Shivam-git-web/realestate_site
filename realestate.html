@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>HavenHomes — Modern Real Estate Listings</title>
+  <meta name="description" content="Responsive real estate landing page with property search, filters, listing cards and contact form. Single-file template you can customize." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --accent:#0f62fe;
+      --muted:#6b7280;
+      --card:#ffffff;
+      --bg:#f7fafc;
+      --radius:14px;
+      font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:#0b1220;line-height:1.45}
+    .container{max-width:1100px;margin:0 auto;padding:28px}
+    header{display:flex;align-items:center;justify-content:space-between;padding:18px 0}
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo{width:46px;height:46px;border-radius:10px;background:linear-gradient(135deg,var(--accent),#6b46c1);display:flex;align-items:center;justify-content:center;color:white;font-weight:700}
+    nav a{margin-left:18px;color:var(--muted);text-decoration:none;font-weight:600}
+    .hero{display:grid;grid-template-columns:1fr 420px;gap:28px;align-items:center;margin:28px 0}
+    .hero-card{background:linear-gradient(180deg,#fff, #fbfdff);padding:28px;border-radius:18px;box-shadow:0 8px 30px rgba(15,22,40,0.06)}
+    .hero h1{margin:0 0 10px;font-size:28px}
+    .lead{color:var(--muted);margin-bottom:18px}
+    .search{display:flex;gap:8px;flex-wrap:wrap}
+    .search input, .search select{padding:12px 14px;border-radius:10px;border:1px solid #e6eef8;min-width:120px}
+    .btn{background:var(--accent);color:white;padding:12px 16px;border-radius:10px;border:0;font-weight:700;cursor:pointer}
+    .filters{display:flex;gap:8px;margin-top:12px}
+    .stats{display:flex;gap:12px;margin-top:18px}
+    .stat{background:var(--card);padding:12px;border-radius:12px;min-width:110px;text-align:center;box-shadow:0 6px 18px rgba(12,18,30,0.04)}
+    .listings{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:18px;margin-top:22px}
+    .card{background:var(--card);border-radius:14px;overflow:hidden;box-shadow:0 10px 30px rgba(11,17,30,0.06);display:flex;flex-direction:column}
+    .media{height:170px;background-size:cover;background-position:center}
+    .card-body{padding:14px;display:flex;flex-direction:column;gap:10px;flex:1}
+    .price{font-weight:700}
+    .meta{color:var(--muted);font-size:13px}
+    .tags{display:flex;gap:8px;flex-wrap:wrap}
+    .tag{background:#f1f5f9;padding:6px 8px;border-radius:8px;font-size:12px}
+    footer{padding:28px 0;color:var(--muted);font-size:14px;text-align:center}
+    /* responsive */
+    @media (max-width:900px){.hero{grid-template-columns:1fr;}.hero-card{order:2}}
+    /* contact modal */
+    .modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(6,9,15,0.4)}
+    .modal.show{display:flex}
+    .modal-box{background:white;padding:18px;border-radius:12px;width:420px;max-width:96%;box-shadow:0 20px 60px rgba(2,6,23,0.35)}
+    input[type="text"], input[type="email"], textarea{width:100%;padding:10px;border-radius:8px;border:1px solid #e6eef8}
+    .small{font-size:13px;color:var(--muted)}
+    .pill{display:inline-block;padding:6px 10px;background:#eef2ff;border-radius:999px;font-weight:600;color:#3b3bff}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="brand">
+        <div class="logo">HH</div>
+        <div>
+          <div style="font-weight:700">HavenHomes</div>
+          <div class="small">Find your next place</div>
+        </div>
+      </div>
+      <nav>
+        <a href="#listings">Listings</a>
+        <a href="#about">About</a>
+        <a href="#contact" id="openContact">Contact</a>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <div class="hero-card">
+        <h1>Find homes, apartments &amp; commercial spaces near you</h1>
+        <p class="lead">Browse curated listings, compare prices, schedule visits and get expert support. Updated daily.</p>
+
+        <div class="search" aria-label="property search">
+          <input id="q" type="text" placeholder="Search by city, area or project" />
+          <select id="type">
+            <option value="any">Any type</option>
+            <option>Apartment</option>
+            <option>House</option>
+            <option>Commercial</option>
+          </select>
+          <select id="beds">
+            <option value="any">Any beds</option>
+            <option value="1">1+ beds</option>
+            <option value="2">2+ beds</option>
+            <option value="3">3+ beds</option>
+          </select>
+          <input id="maxPrice" type="text" placeholder="Max price (₹)" />
+          <button class="btn" id="searchBtn">Search</button>
+        </div>
+
+        <div class="filters">
+          <label class="pill">Verified</label>
+          <label class="pill">Open House</label>
+          <label class="pill">Ready to Move</label>
+        </div>
+
+        <div class="stats">
+          <div class="stat"><div style="font-size:18px;font-weight:700">1,248</div><div class="small">Listings</div></div>
+          <div class="stat"><div style="font-size:18px;font-weight:700">4.8/5</div><div class="small">Average Rating</div></div>
+          <div class="stat"><div style="font-size:18px;font-weight:700">24</div><div class="small">Cities</div></div>
+        </div>
+
+      </div>
+
+      <aside style="background:linear-gradient(180deg,#ffffff,#f3f7ff);border-radius:18px;padding:18px;height:fit-content;box-shadow:0 8px 30px rgba(15,22,40,0.04)">
+        <h3 style="margin-top:0">Featured</h3>
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div style="background:white;padding:12px;border-radius:12px">
+            <div style="font-weight:700">Luxury 3BHK in Bandra</div>
+            <div class="small">₹ 2.3 Cr · 3 Beds · 1800 sqft</div>
+          </div>
+          <div style="background:white;padding:12px;border-radius:12px">
+            <div style="font-weight:700">Retail space in Andheri</div>
+            <div class="small">₹ 1.2 L/month · 1200 sqft</div>
+          </div>
+        </div>
+
+        <div style="margin-top:18px;background:#fff;padding:12px;border-radius:12px">
+          <div style="font-weight:700">Get expert help</div>
+          <div class="small">Schedule a free consultation with our agent.</div>
+          <button class="btn" style="margin-top:10px" id="contactBtn">Request call</button>
+        </div>
+      </aside>
+    </section>
+
+    <section id="listings">
+      <h2 style="margin-bottom:6px">Latest listings</h2>
+      <p class="small">Showing properties from multiple cities — updated today.</p>
+
+      <div class="listings" id="cards">
+        <!-- Cards will be injected by JS -->
+      </div>
+    </section>
+
+    <section id="about" style="margin-top:26px">
+      <div style="display:flex;gap:18px;align-items:center;flex-wrap:wrap">
+        <div style="flex:1;min-width:260px">
+          <h3>Why choose HavenHomes?</h3>
+          <ul class="small" style="line-height:1.8">
+            <li>Verified owners &amp; updated documentation checks.</li>
+            <li>Transparent pricing and flexible visit scheduling.</li>
+            <li>Local agents with deep market knowledge.</li>
+          </ul>
+        </div>
+        <div style="min-width:260px">
+          <h4>Our mission</h4>
+          <p class="small">Make property search simple and trustworthy — whether you're buying, renting or investing.</p>
+        </div>
+      </div>
+    </section>
+
+    <footer style="margin-top:30px">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px">
+        <div>© <strong>HavenHomes</strong> <span class="small">2025</span></div>
+        <div class="small">Built with ❤️ — Customize it to suit your brand.</div>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Contact Modal -->
+  <div class="modal" id="modal">
+    <div class="modal-box">
+      <h3 style="margin:0 0 6px">Contact Us</h3>
+      <p class="small">Fill below — our agent will reach out within 24 hours.</p>
+      <form id="contactForm" style="margin-top:12px;display:flex;flex-direction:column;gap:10px">
+        <input required type="text" id="name" placeholder="Your name" />
+        <input required type="email" id="email" placeholder="Email" />
+        <input type="text" id="phone" placeholder="Phone (optional)" />
+        <textarea id="message" placeholder="Message / property of interest" rows="4"></textarea>
+        <div style="display:flex;gap:8px;justify-content:flex-end">
+          <button type="button" class="btn" id="submitContact">Send</button>
+          <button type="button" style="background:#eef2f7;border:0;padding:10px 12px;border-radius:10px;cursor:pointer" id="closeModal">Close</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // Sample data (replace with API integration)
+    const properties = [
+      {id:1,title:"Modern 2BHK in Parel",city:"Mumbai",type:"Apartment",beds:2,price:8500000,area:950,image:"https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=1200&q=60",verified:true},
+      {id:2,title:"Cozy 1BHK near Station",city:"Pune",type:"Apartment",beds:1,price:4200000,area:520,image:"https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=60",verified:false},
+      {id:3,title:"Luxury 3BHK with sea view",city:"Mumbai",type:"House",beds:3,price:23000000,area:1800,image:"https://images.unsplash.com/photo-1572120360610-d971b9b4b5c1?auto=format&fit=crop&w=1200&q=60",verified:true},
+      {id:4,title:"Retail shop in Market Road",city:"Indore",type:"Commercial",beds:0,price:1200000,area:1200,image:"https://images.unsplash.com/photo-1600585154212-203b6b7d7a9f?auto=format&fit=crop&w=1200&q=60",verified:true},
+      {id:5,title:"Spacious 3BHK for family",city:"Bengaluru",type:"Apartment",beds:3,price:9800000,area:1300,image:"https://images.unsplash.com/photo-1555375771-5842d8aa8e54?auto=format&fit=crop&w=1200&q=60",verified:false}
+    ];
+
+    const cardsEl = document.getElementById('cards');
+    function formatPrice(n){
+      if(!n) return 'Contact for price';
+      return '₹ ' + n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+    function render(list){
+      cardsEl.innerHTML = '';
+      if(list.length===0){cardsEl.innerHTML = '<div class="small">No listings found for your filters.</div>';return}
+      list.forEach(p=>{
+        const div = document.createElement('div');div.className='card';
+        div.innerHTML = `
+          <div class="media" style="background-image:url('${p.image}')"></div>
+          <div class="card-body">
+            <div style="display:flex;justify-content:space-between;align-items:center"><div style="font-weight:700">${p.title}</div><div class="price">${formatPrice(p.price)}</div></div>
+            <div class="meta">${p.city} · ${p.area} sqft · ${p.beds} beds</div>
+            <div class="tags">${p.verified?'<span class="tag">Verified</span>':''}<span class="tag">${p.type}</span></div>
+            <div style="margin-top:auto;display:flex;gap:8px;justify-content:flex-end">
+              <button class="btn" onclick="schedule(${p.id})">Schedule Visit</button>
+              <button style="background:#eef2f7;border:0;padding:8px 10px;border-radius:10px;cursor:pointer" onclick="share(${p.id})">Share</button>
+            </div>
+          </div>`;
+        cardsEl.appendChild(div);
+      })
+    }
+
+    function schedule(id){
+      const p = properties.find(x=>x.id===id);
+      alert('Request sent to schedule a visit for: '+p.title);
+    }
+    function share(id){
+      const p = properties.find(x=>x.id===id);
+      if(navigator.share){navigator.share({title:p.title,text:p.city,url:location.href})}
+      else{prompt('Copy link to share', location.href + '#prop' + id)}
+    }
+
+    // initial render
+    render(properties);
+
+    // search/filter logic
+    document.getElementById('searchBtn').addEventListener('click',()=>{
+      const q = document.getElementById('q').value.trim().toLowerCase();
+      const type = document.getElementById('type').value;
+      const beds = document.getElementById('beds').value;
+      const maxPrice = parseInt(document.getElementById('maxPrice').value.replace(/[^0-9]/g,'')) || Infinity;
+      let res = properties.filter(p=>{
+        if(type!=='any' && p.type!==type) return false;
+        if(beds!=='any' && p.beds < parseInt(beds)) return false;
+        if(p.price > maxPrice) return false;
+        if(q){const hay = (p.city+' '+p.title+' '+p.type).toLowerCase(); if(!hay.includes(q)) return false}
+        return true;
+      });
+      render(res);
+    });
+
+    // Modal controls
+    const modal = document.getElementById('modal');
+    document.getElementById('openContact').addEventListener('click', (e)=>{e.preventDefault(); modal.classList.add('show')});
+    document.getElementById('contactBtn').addEventListener('click', ()=>modal.classList.add('show'));
+    document.getElementById('closeModal').addEventListener('click', ()=>modal.classList.remove('show'));
+    document.getElementById('submitContact').addEventListener('click', ()=>{
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const msg = document.getElementById('message').value.trim();
+      if(!name||!email){alert('Please enter name and email');return}
+      // send to backend — placeholder
+      console.log('contact send', {name,email,msg});
+      alert('Thanks '+name+" — we'll contact you soon.");
+      modal.classList.remove('show');
+      document.getElementById('contactForm').reset();
+    });
+
+    // keyboard escape to close modal
+    window.addEventListener('keydown',(e)=>{if(e.key==='Escape') modal.classList.remove('show')});
+
+    // lightweight GA placeholder (replace with your GA id)
+    (function(){
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments)}
+      gtag('js', new Date());
+      gtag('config', 'G-XXXXXXXXXX');
+    })();
+  </script>
+</body>
+</html>
